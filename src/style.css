@@ -1,1 +1,53 @@
 @import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif sans-serif;
+  }
+}
+
+@theme {
+  /* breakpoint */
+  --breakpoint-2xl: initial;
+}
+
+@utility container {
+  @apply mx-auto px-4 lg:px-2.5;
+}
+
+@layer components {
+  .count {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    z-index: 10;
+    display: flex;
+    width: 21px;
+    height: 21px;
+    color: white;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(190 18 60 / var(--tw-bg-opacity));
+    padding-top: 0.125rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    transition-duration: 150ms;
+  }
+
+  .basket {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background-color: lightblue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    height: auto;
+  }
+}
