@@ -3,6 +3,7 @@
 @layer base {
   body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif sans-serif;
+    @apply bg-gray-200;
   }
 }
 
@@ -47,7 +48,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 400px;
+    width: 250px;
     height: auto;
   }
 }

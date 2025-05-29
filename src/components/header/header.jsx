@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
 import clsx from "clsx";
-import BasktWrapper from "../basket/baskt";
 import useBasket from "../../store/basket";
+import BasketCard from "../basket/baskt";
 
 const Header = () => {
+  const basketItems = useBasket((state) => state.items);
+  const basketActions = useBasket((state) => state.actions);
   const basketItemsCount = useBasket((state) => state.items.length);
   const totalPrice = useBasket((state) => state.invoice.totalPrice);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleModal = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <section className="sticky top-0 z-50 bg-white shadow-md">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* left side -  */}
-          <div className="flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 ">
             <NavLink
               to="/"
               className={({ isActive, isPending }) =>
@@ -50,7 +61,21 @@ const Header = () => {
               </Link>
             </nav>
           </div>
-
+          <NavLink
+            to="/"
+            className={({ isActive, isPending }) =>
+              clsx(
+                "md:hidden text-base px-4 py-2 rounded-lg bg-blue-50 transition-colors",
+                {
+                  "opacity-50 pointer-events-none": isPending,
+                  "bg-blue-600 text-white hover:bg-blue-700": isActive,
+                  "text-gray-700 hover:bg-gray-100": !isActive && !isPending,
+                }
+              )
+            }
+          >
+            Home
+          </NavLink>
           {/* right side*/}
           <div className="flex items-center space-x-6">
             <a
@@ -60,7 +85,10 @@ const Header = () => {
               Sign in | Register
             </a>
             <div className="relative">
-              <button className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button
+                onClick={() => handleModal()}
+                className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -76,33 +104,49 @@ const Header = () => {
                   />
                 </svg>
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  2
+                  {basketItemsCount}
                 </span>
               </button>
 
               {/* Cart Dropdown */}
-              <div className="absolute right-0 top-12 w-96 bg-white rounded-lg shadow-xl border border-gray-200">
-                <div className="p-4">
+              <div className="absolute w-70 right-0 top-12 bg-white rounded-lg shadow-xl ">
+                <div className={clsx(`p-4`, modalOpen ? `block` : `hidden`)}>
                   <header className="flex justify-between items-center pb-4 border-b">
                     <h2 className="text-lg font-medium">
                       Shopping Cart{" "}
-                      <span className="text-gray-500">{basketItemsCount}</span>
+                      <span className="text-gray-500">
+                        ({basketItemsCount})
+                      </span>
                     </h2>
-                    <button className="text-gray-400 hover:text-gray-600 text-xl">
+                    <button
+                      onClick={() => closeModal()}
+                      className="flex w-8 h-8 justify-center items-center text-gray-400 hover:text-gray-600 hover:bg-gray-200 text-xl rounded-4xl cursor-pointer"
+                    >
                       ×
                     </button>
                   </header>
 
                   {/* basket items */}
                   <main className="py-4 max-h-96 overflow-auto">
-                    {/* Cart Items will be loaded here */}
-                    <BasktWrapper />
+                    {/* Cart Items will be loaded here */}{" "}
+                    <div className="flex flex-col space-y-5">
+                      {basketItems && basketItems.length > 0 ? (
+                        basketItems.map((item) => (
+                          <BasketCard key={item.id} data={item} />
+                        ))
+                      ) : (
+                        <div>Your cart is empty...</div>
+                      )}
+                    </div>
                   </main>
 
                   <footer className="pt-4 border-t">
                     <div className="flex justify-between items-center mb-4">
                       <div className="space-x-2 flex items-center ">
-                        <button className="px-3 py-2 text-sm text-red-600 bg-red-50 hover:bg-red-50 rounded-lg inline-flex items-center">
+                        <button
+                          onClick={() => basketActions.clearAllBasket()}
+                          className="px-3 py-2 text-sm text-red-600 bg-red-50 hover:bg-red-100 rounded-lg inline-flex items-center cursor-pointer"
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -119,15 +163,13 @@ const Header = () => {
                           </svg>
                           Clear
                         </button>
-                        <button className="px-3 py-2 text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg inline-flex items-center">
+                        <button className="px-3 py-2 text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg inline-flex items-center cursor-pointer">
                           Checkout
                         </button>
                       </div>
-                      <div>
-                        <p className="text-gray-800">
-                          Total:{" "}
-                          <span className="font-bold">${totalPrice}</span>
-                        </p>
+                      <div className="text-gray-800">
+                        <p>Total: </p>
+                        <p className="font-bold">${totalPrice}</p>
                       </div>
                     </div>
                     <div className="grid place-items-center">

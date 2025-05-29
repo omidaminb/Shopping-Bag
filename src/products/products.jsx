@@ -26,7 +26,9 @@ const Products = () => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading ...</div>;
+    return (
+      <div className="mt-25 w-full grid place-items-center">Loading ...</div>
+    );
   } else if (error) {
     return <div>{error}</div>;
   } else if (products) {

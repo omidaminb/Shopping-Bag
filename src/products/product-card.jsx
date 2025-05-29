@@ -1,11 +1,11 @@
 import useBasket from "../store/basket";
+import clsx from "clsx";
 
 const ProductCard = ({ data }) => {
   const actions = useBasket((state) => state.actions);
   const quantity = useBasket(
     (state) => state.items.find((item) => item.id === data.id)?.quantity || 0
   );
-  console.log(" ProductCard ~ quantity:", quantity);
 
   return (
     <div className="flex flex-col bg-gray-300 border border-gray-600 p-2.5 rounded-2xl">
@@ -33,7 +33,12 @@ const ProductCard = ({ data }) => {
           >
             -
           </button>
-          <p className="border border-orange-500 text-orange-600 px-2 py-2 rounded-lg w-fit">
+          <p
+            className={clsx(
+              "border border-orange-500 text-orange-600 px-2 py-2 rounded-lg w-fit",
+              quantity > 0 ? "bg-yellow-300" : ""
+            )}
+          >
             {quantity}
           </p>
           <button
