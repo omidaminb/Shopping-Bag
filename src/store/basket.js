@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 const useBasket = create((set, get) => ({
-  //data
+  //دیتا
   items: [],
   invoice: {
     totalPrice: 0,
@@ -14,7 +14,7 @@ const useBasket = create((set, get) => ({
       const alreadyExist = get().items.some((item) => item.id === payload.id);
 
       if (!alreadyExist) {
-        // اگر محصول جدید است
+        //محصول جدید
         set((state) => ({
           items: [...state.items, { ...payload, quantity: 1 }],
           invoice: {
@@ -28,7 +28,7 @@ const useBasket = create((set, get) => ({
           },
         }));
       } else {
-        // اگر محصول قبلاً در سبد وجود دارد
+        //محصول موجود
         set((state) => {
           const updatedItems = state.items.map((item) => {
             if (item.id === payload.id) {
@@ -37,7 +37,7 @@ const useBasket = create((set, get) => ({
             return item;
           });
 
-          // محاسبه مجدد کل قیمت بر اساس همه آیتم‌ها
+          // total price
           let newTotalPrice = 0;
           updatedItems.forEach((item) => {
             newTotalPrice += Number(item.price) * item.quantity;
@@ -89,7 +89,7 @@ const useBasket = create((set, get) => ({
           (item) => item.id !== payload.id
         );
 
-        // محاسبه مجدد کل قیمت بعد از حذف آیتم
+        // total price
         let newTotalPrice = 0;
         updatedItems.forEach((item) => {
           newTotalPrice += Number(item.price) * item.quantity;
