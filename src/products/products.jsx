@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./product-card";
+import useProductList from "../store/product-list";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
+  const { productList, actions } = useProductList();
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -14,7 +15,7 @@ const Products = () => {
         throw new Error("دیتا مشکل دارد");
       }
       const data = await response.json();
-      setProducts(data);
+      actions.addList(data);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -22,7 +23,7 @@ const Products = () => {
     }
   };
   useEffect(() => {
-    fetchData();
+    productList.length <= 0 && fetchData();
   }, []);
 
   if (isLoading) {
@@ -31,11 +32,11 @@ const Products = () => {
     );
   } else if (error) {
     return <div>{error}</div>;
-  } else if (products) {
+  } else if (productList) {
     return (
       <div className="container">
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-x-4 gap-y-7 mt-10 ">
-          {products.map((product) => (
+          {productList.map((product) => (
             <ProductCard key={product.id} data={product} />
           ))}
         </div>
