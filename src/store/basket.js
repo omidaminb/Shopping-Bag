@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 const useBasket = create((set, get) => ({
-  //دیتا
+  //data
   items: [],
   invoice: {
     totalPrice: 0,
@@ -14,7 +14,7 @@ const useBasket = create((set, get) => ({
       const alreadyExist = get().items.some((item) => item.id === payload.id);
 
       if (!alreadyExist) {
-        //محصول جدید
+        // new product
         set((state) => ({
           items: [...state.items, { ...payload, quantity: 1 }],
           invoice: {
@@ -28,7 +28,7 @@ const useBasket = create((set, get) => ({
           },
         }));
       } else {
-        //محصول موجود
+        // product exist
         set((state) => {
           const updatedItems = state.items.map((item) => {
             if (item.id === payload.id) {
