@@ -3,6 +3,8 @@ import { Link, NavLink } from "react-router";
 import clsx from "clsx";
 import useBasket from "../../store/basket";
 import BasketCard from "../basket/baskt";
+import { useClickAway } from "@uidotdev/usehooks";
+import { useLocation } from "react-router";
 
 const Header = () => {
   const basketItems = useBasket((state) => state.items);
@@ -11,19 +13,33 @@ const Header = () => {
   const totalPrice = useBasket((state) => state.invoice.totalPrice);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const location = useLocation();
+
+  const checkClickOutside = useClickAway(() => {
+    if (modalOpen) {
+      setModalOpen(false);
+    }
+  });
+
   const calc = () => {
     const itemsNumber = basketItems.reduce((acc, item) => {
       return acc + item.quantity;
     }, 0);
     return itemsNumber;
   };
+  // یا
+  //   const calc = () => {
+  //   return basketItems.reduce((acc, item) => acc + item.quantity, 0);
+  // };
 
   const handleModal = () => {
     setModalOpen(!modalOpen);
   };
 
   const closeModal = () => {
-    setModalOpen(false);
+    setTimeout(() => {
+      setModalOpen(false);
+    }, 100);
   };
 
   return (
@@ -48,24 +64,15 @@ const Header = () => {
               Home
             </NavLink>
             <nav className="flex items-center space-x-6">
-              <Link
-                to="/"
-                className="text-gray-700 hover:text-gray-900 transition-colors"
-              >
+              <a className="text-gray-700 hover:text-gray-900 transition-colors cursor-pointer">
                 Best Sellers
-              </Link>
-              <Link
-                to="/"
-                className="text-gray-700 hover:text-gray-900 transition-colors"
-              >
+              </a>
+              <a className="text-gray-700 hover:text-gray-900 transition-colors cursor-pointer">
                 Supermarket
-              </Link>
-              <Link
-                to="/"
-                className="text-gray-700 hover:text-gray-900 transition-colors"
-              >
+              </a>
+              <a className="text-gray-700 hover:text-gray-900 transition-colors cursor-pointer">
                 Amazing Offers
-              </Link>
+              </a>
             </nav>
           </div>
           <NavLink
@@ -91,10 +98,14 @@ const Header = () => {
             >
               Sign in | Register
             </a>
-            <div className="relative">
+            <div className="relative" ref={checkClickOutside}>
               <button
                 onClick={() => handleModal()}
-                className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+                className={`relative p-2 rounded-lg transition-colors cursor-pointer ${
+                  location.pathname === "/basket"
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "hover:bg-gray-100"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -181,6 +192,7 @@ const Header = () => {
                     </div>
                     <div className="grid place-items-center">
                       <NavLink
+                        onClick={() => closeModal()}
                         to={"/basket"}
                         className={({ isActive, isPending }) =>
                           clsx(

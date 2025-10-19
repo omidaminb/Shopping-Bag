@@ -12,7 +12,7 @@ const BasketPage = () => {
         <div className="">
           {basketItems && basketItems.length ? (
             basketItems.map((item) => {
-              return <UserProducts data={item} />;
+              return <UserProducts data={item} key={item.id} />;
             })
           ) : (
             <div className="w-full h-full grid place-items-center">
