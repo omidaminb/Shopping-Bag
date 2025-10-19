@@ -37,7 +37,9 @@ const Header = () => {
   };
 
   const closeModal = () => {
-    setModalOpen(false);
+    setTimeout(() => {
+      setModalOpen(false);
+    }, 100);
   };
 
   return (
@@ -190,6 +192,7 @@ const Header = () => {
                     </div>
                     <div className="grid place-items-center">
                       <NavLink
+                        onClick={() => closeModal()}
                         to={"/basket"}
                         className={({ isActive, isPending }) =>
                           clsx(
