@@ -17,6 +17,10 @@ const Header = () => {
     }, 0);
     return itemsNumber;
   };
+  // یا
+  //   const calc = () => {
+  //   return basketItems.reduce((acc, item) => acc + item.quantity, 0);
+  // };
 
   const handleModal = () => {
     setModalOpen(!modalOpen);
@@ -48,24 +52,15 @@ const Header = () => {
               Home
             </NavLink>
             <nav className="flex items-center space-x-6">
-              <Link
-                to="/"
-                className="text-gray-700 hover:text-gray-900 transition-colors"
-              >
+              <a className="text-gray-700 hover:text-gray-900 transition-colors cursor-pointer">
                 Best Sellers
-              </Link>
-              <Link
-                to="/"
-                className="text-gray-700 hover:text-gray-900 transition-colors"
-              >
+              </a>
+              <a className="text-gray-700 hover:text-gray-900 transition-colors cursor-pointer">
                 Supermarket
-              </Link>
-              <Link
-                to="/"
-                className="text-gray-700 hover:text-gray-900 transition-colors"
-              >
+              </a>
+              <a className="text-gray-700 hover:text-gray-900 transition-colors cursor-pointer">
                 Amazing Offers
-              </Link>
+              </a>
             </nav>
           </div>
           <NavLink

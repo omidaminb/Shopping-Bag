@@ -3,6 +3,10 @@ import ProductCard from "./product-card";
 import useProductList from "../store/product-list";
 
 const Products = () => {
+  console.log("products");
+
+  // !روش قبلا
+  // const [products,setProducts]=useState([])
   const { productList, actions } = useProductList();
   const [isLoading, setIsloading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,6 +19,7 @@ const Products = () => {
         throw new Error("دیتا مشکل دارد");
       }
       const data = await response.json();
+      // setProdycts(data)
       actions.addList(data);
     } catch (error) {
       setError(error.message);
@@ -23,6 +28,7 @@ const Products = () => {
     }
   };
   useEffect(() => {
+    // fetchData()
     productList.length <= 0 && fetchData();
   }, []);
 

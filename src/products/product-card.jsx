@@ -6,6 +6,10 @@ const ProductCard = ({ data }) => {
   const quantity = useBasket(
     (state) => state.items.find((item) => item.id === data.id)?.quantity || 0
   );
+  // const handleAddToBasket = ()=>{
+  //   actions.addToBasket(data)
+  // api cal فرستادن دیتاها به بک اد
+  // }
 
   return (
     <div className="flex flex-col bg-gray-300 border border-gray-600 p-2.5 rounded-2xl">
@@ -42,7 +46,7 @@ const ProductCard = ({ data }) => {
             {quantity}
           </p>
           <button
-            onClick={() => actions.addToBasket(data)}
+            onClick={() => actions.addToBasket(data)} //یا  ()=>handleAddToBasket(data)
             className="border border-green-500 text-green-600 px-3 py-2 rounded-lg w-fit cursor-pointer"
           >
             +
