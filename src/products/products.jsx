@@ -3,8 +3,6 @@ import ProductCard from "./product-card";
 import useProductList from "../store/product-list";
 
 const Products = () => {
-  console.log("products");
-
   // !روش قبلا
   // const [products,setProducts]=useState([])
   const { productList, actions } = useProductList();

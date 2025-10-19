@@ -3,6 +3,8 @@ import { Link, NavLink } from "react-router";
 import clsx from "clsx";
 import useBasket from "../../store/basket";
 import BasketCard from "../basket/baskt";
+import { useClickAway } from "@uidotdev/usehooks";
+import { useLocation } from "react-router";
 
 const Header = () => {
   const basketItems = useBasket((state) => state.items);
@@ -10,6 +12,14 @@ const Header = () => {
   const basketItemsCount = useBasket((state) => state.items.length);
   const totalPrice = useBasket((state) => state.invoice.totalPrice);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const location = useLocation();
+
+  const checkClickOutside = useClickAway(() => {
+    if (modalOpen) {
+      setModalOpen(false);
+    }
+  });
 
   const calc = () => {
     const itemsNumber = basketItems.reduce((acc, item) => {
@@ -86,10 +96,14 @@ const Header = () => {
             >
               Sign in | Register
             </a>
-            <div className="relative">
+            <div className="relative" ref={checkClickOutside}>
               <button
                 onClick={() => handleModal()}
-                className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+                className={`relative p-2 rounded-lg transition-colors cursor-pointer ${
+                  location.pathname === "/basket"
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "hover:bg-gray-100"
+                }`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
